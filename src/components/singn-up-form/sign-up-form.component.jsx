@@ -1,11 +1,12 @@
-import { async } from "q";
 import { useState } from "react";
-
+import Button from "../button/button.component";
+import FormInput from "../form-input/form-input.component";
+import "./sing-up-form.styles.scss";
 const defaultFormFields = {
   displayName: "",
   email: "",
   password: "",
-  confirmedPassword: "",
+  confirmPassword: "",
 };
 
 const SignUpForm = ({ submitFromData }) => {
@@ -23,8 +24,9 @@ const SignUpForm = ({ submitFromData }) => {
   };
 
   return (
-    <div>
-      <h1>Sign up with your email and password</h1>
+    <div className="sign-up-container">
+      <h2>Don't have an account?'</h2>
+      <span>Sign up with your email and password</span>
       <form
         onSubmit={async (event) => {
           event.preventDefault();
@@ -37,39 +39,42 @@ const SignUpForm = ({ submitFromData }) => {
           resetFormFields();
         }}
       >
-        <label>Dispaly Name</label>
-        <input
+        <FormInput
+          label="Display Name"
           onChange={handleChange}
           name="displayName"
           value={displayName}
           type="text"
           required
-        ></input>
-        <label>Email</label>
-        <input
+        ></FormInput>
+
+        <FormInput
+          label="Email"
           type="email"
           onChange={handleChange}
           name="email"
           value={email}
           required
-        ></input>
-        <label>Password</label>
-        <input
+        ></FormInput>
+
+        <FormInput
+          label="Password"
           type="password"
           onChange={handleChange}
           name="password"
           value={password}
           required
-        ></input>
-        <label>Confirm Password</label>
-        <input
+        ></FormInput>
+
+        <FormInput
+          label="Confirm Password"
           type="password"
           onChange={handleChange}
           name="confirmPassword"
           value={confirmPassword}
           required
-        ></input>
-        <button type="submit">Submit</button>
+        ></FormInput>
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   );
