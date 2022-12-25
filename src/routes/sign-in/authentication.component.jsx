@@ -1,10 +1,13 @@
 import {
   createUserDocumentFromAuth,
+  signInWithEmailAndPass,
   singInGoolgePopUp,
 } from "../../utils/firebase/firebase.utils";
 
 import SignUpForm from "../../components/singn-up-form/sign-up-form.component";
 import { createUserWithEmailAndPassword1 } from "../../utils/firebase/firebase.utils";
+import SignInForm from "../../components/sign-in-form/sign-in-form.component";
+import "./authentication.styles.scss";
 const SignIn = () => {
   const logGoogleUser = async () => {
     //const response = await singInGoolgePopUp();
@@ -14,11 +17,13 @@ const SignIn = () => {
   const submitFormData = async ({ email, password, displayName }) => {
     await createUserWithEmailAndPassword1({ email, password, displayName });
   };
+  const handleSubmit = async ({ email, password }) => {
+    signInWithEmailAndPass({ email, password });
+  };
   return (
-    <div>
-      <h2>Sign in page</h2>
-      <button onClick={logGoogleUser}>Sign in with Google</button>
+    <div className="authentication-container">
       <SignUpForm submitFromData={submitFormData} />
+      <SignInForm handleSubmit={handleSubmit} />
     </div>
   );
 };

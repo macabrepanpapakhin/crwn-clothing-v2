@@ -4,10 +4,11 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   signInWithPopup,
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, endAt } from "firebase/firestore";
 import { async } from "q";
 
 const firebaseConfig = {
@@ -87,5 +88,26 @@ export const createUserWithEmailAndPassword1 = async ({
   } catch (error) {
     if (error.code === "auth/email-already-in-use")
       console.log("Already Sign Up");
+  }
+};
+
+export const signInWithEmailAndPass = async ({ email, password }) => {
+  try {
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    console.log("sign in response");
+    console.log(response);
+  } catch (error) {
+    switch (error.code) {
+      case "auth/wrong-password":
+        alert("incorrect password or email");
+        break;
+
+      case "auth/user-not-found":
+        alert("incorrect password or email");
+        break;
+
+      default:
+        console.log(error);
+    }
   }
 };
