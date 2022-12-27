@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sing-up-form.styles.scss";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/users.context";
 const defaultFormFields = {
   displayName: "",
   email: "",
@@ -10,7 +12,10 @@ const defaultFormFields = {
 };
 
 const SignUpForm = ({ submitFromData }) => {
+  console.log("sign up hit");
   const [formFields, setFormFields] = useState(defaultFormFields);
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -35,8 +40,10 @@ const SignUpForm = ({ submitFromData }) => {
             return;
           }
 
-          await submitFromData(formFields);
-          resetFormFields();
+          const user = await submitFromData(formFields);
+
+          setCurrentUser(user);
+          //resetFormFields();
         }}
       >
         <FormInput

@@ -9,7 +9,7 @@ const CategoryItem = ({ title, imageUrl }) => {
       />
       <div className="category-body-container">
         <h2>{title}</h2>
-        <p>Shop Please</p>
+        <p>Shop Now</p>
       </div>
     </div>
   );

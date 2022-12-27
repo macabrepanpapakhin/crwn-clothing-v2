@@ -6,11 +6,12 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
-
+import { UserContext } from "../../contexts/users.context";
 import { getFirestore, doc, getDoc, setDoc, endAt } from "firebase/firestore";
 import { async } from "q";
-
+import { useContext } from "react";
 const firebaseConfig = {
   apiKey: "AIzaSyDQGLM1ju7K7NxatDTPAyH288kzezkHEEI",
   authDomain: "crown-clothing-f79bd.firebaseapp.com",
@@ -48,7 +49,6 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         password,
         createdAt,
       });
-      console.log("done");
     } catch (error) {
       console.log("error creating user " + error);
     }
@@ -84,7 +84,8 @@ export const createUserWithEmailAndPassword1 = async ({
       password
     );
     const uid = response.user.uid;
-    createUserDocumentFromAuth({ displayName, email, password, uid });
+    await createUserDocumentFromAuth({ displayName, email, password, uid });
+    return response.user;
   } catch (error) {
     if (error.code === "auth/email-already-in-use")
       console.log("Already Sign Up");
@@ -93,9 +94,9 @@ export const createUserWithEmailAndPassword1 = async ({
 
 export const signInWithEmailAndPass = async ({ email, password }) => {
   try {
-    const response = await signInWithEmailAndPassword(auth, email, password);
-    console.log("sign in response");
-    console.log(response);
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
+
+    return user;
   } catch (error) {
     switch (error.code) {
       case "auth/wrong-password":
@@ -111,3 +112,5 @@ export const signInWithEmailAndPass = async ({ email, password }) => {
     }
   }
 };
+
+export const SignOutUser = async () => await signOut(auth);

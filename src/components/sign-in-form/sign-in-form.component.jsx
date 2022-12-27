@@ -1,26 +1,31 @@
 import FormInput from "../form-input/form-input.component";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "../button/button.component";
+import { UserContext } from "../../contexts/users.context";
 const SignInFormComponent = ({ handleSubmit }) => {
+  console.log("sign in hit");
   const defaultFormFields = { email: "", password: "" };
-
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
-  const middle = (event) => {
+  const middle = async (event) => {
     event.preventDefault();
-    console.log(formFields);
-    handleSubmit(formFields);
+    const user = await handleSubmit(formFields);
+    console.log("in sign in");
+    console.log(user);
+    setCurrentUser(user);
+    setFormFields(defaultFormFields);
   };
 
   return (
     <div className="sign-up-container">
       <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
-      <form onSubmit={middle}>
+      <form onSubmit={middle} method="POST">
         <FormInput
           label="email"
           type="email"
