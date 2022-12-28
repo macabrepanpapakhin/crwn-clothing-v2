@@ -15,7 +15,7 @@ const SignUpForm = ({ submitFromData }) => {
   console.log("sign up hit");
   const [formFields, setFormFields] = useState(defaultFormFields);
 
-  const { setCurrentUser } = useContext(UserContext);
+  // const { setCurrentUser } = useContext(UserContext);
 
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -42,7 +42,7 @@ const SignUpForm = ({ submitFromData }) => {
 
           const user = await submitFromData(formFields);
 
-          setCurrentUser(user);
+          // setCurrentUser(user);
           //resetFormFields();
         }}
       >

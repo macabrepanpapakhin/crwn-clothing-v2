@@ -5,7 +5,7 @@ import { UserContext } from "../../contexts/users.context";
 const SignInFormComponent = ({ handleSubmit }) => {
   console.log("sign in hit");
   const defaultFormFields = { email: "", password: "" };
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  //const { currentUser, setCurrentUser } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
   const handleChange = (event) => {
@@ -17,7 +17,7 @@ const SignInFormComponent = ({ handleSubmit }) => {
     const user = await handleSubmit(formFields);
     console.log("in sign in");
     console.log(user);
-    setCurrentUser(user);
+    // setCurrentUser(user);
     setFormFields(defaultFormFields);
   };
 
