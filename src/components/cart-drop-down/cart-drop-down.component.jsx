@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
 import { Link } from "react-router-dom";
 const CartDropdown = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, setIsCartOpen } = useContext(CartContext);
   return (
     <div className="cart-dropdown-container">
       {cartItems.length ? (
@@ -21,7 +21,13 @@ const CartDropdown = () => {
       )}
 
       <Link to="/checkout">
-        <Button>CheckOut</Button>
+        <Button
+          onClick={() => {
+            setIsCartOpen(false);
+          }}
+        >
+          CheckOut
+        </Button>
       </Link>
     </div>
   );

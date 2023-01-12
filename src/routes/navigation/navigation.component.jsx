@@ -18,12 +18,20 @@ const Navigation = () => {
   return (
     <Fragment>
       <div className="navigation">
-        <Link className="logo-container" to="/">
+        <Link
+          className="logo-container"
+          to="/"
+          onClick={() => setIsCartOpen(false)}
+        >
           <CrwnLogo className="logo" />
         </Link>
 
         <div className="nav-links-container">
-          <Link className="nav-link" to="shop">
+          <Link
+            className="nav-link"
+            to="shop"
+            onClick={() => setIsCartOpen(false)}
+          >
             Shop
           </Link>
           {currentUser ? (
@@ -31,7 +39,11 @@ const Navigation = () => {
               Sign Out
             </span>
           ) : (
-            <Link className="nav-link" to="authentication">
+            <Link
+              className="nav-link"
+              to="authentication"
+              onClick={() => setIsCartOpen(false)}
+            >
               Sign In
             </Link>
           )}

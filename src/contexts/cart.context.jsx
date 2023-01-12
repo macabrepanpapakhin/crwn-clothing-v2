@@ -41,7 +41,6 @@ const reduceItemCount = (cardItems, productToRemove, amountToRemove) => {
   );
 };
 const addItemCount = (cardItems, productToAdd, amountToAdd) => {
-  console.log("get called");
   return cardItems.map((cartItem) =>
     cartItem.id === productToAdd.id
       ? { ...cartItem, quantity: cartItem.quantity + amountToAdd }
@@ -64,8 +63,6 @@ export const CartProvider = ({ children }) => {
     setCartItems(reduceItemCount(cartItems, productToRemove, amountToRemove));
   };
   const addItems = (productToAdd, amountToAdd) => {
-    console.log(amountToAdd);
-    console.log(productToAdd);
     setCartItems(addItemCount(cartItems, productToAdd, amountToAdd));
   };
 
@@ -74,12 +71,7 @@ export const CartProvider = ({ children }) => {
       (total, cartItem) => total + cartItem.quantity,
       0
     );
-    cartItems.forEach((cartItem) => {
-      console.log("checking");
-      if (cartItem.quantity <= 0) {
-        removeItem(cartItem);
-      }
-    });
+
     setItemsCount(newCount);
   }, [cartItems]);
 
