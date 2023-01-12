@@ -15,7 +15,6 @@ import {
   doc,
   getDoc,
   setDoc,
-  endAt,
   collection,
   writeBatch,
   query,
@@ -49,8 +48,7 @@ export const db = getFirestore();
 
 export const addColelctionsAndDocuments = async (
   collectionKey,
-  objectsToAdd,
-  field = "title"
+  objectsToAdd
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -67,9 +65,11 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querySnapShot = await getDocs(q);
+  console.log(querySnapShot.docs);
 
   const categoryMap = querySnapShot.docs.reduce((acc, docSnapShot) => {
     const { title, items } = docSnapShot.data();
+
     acc[title.toLowerCase()] = items;
     return acc;
   }, {});
