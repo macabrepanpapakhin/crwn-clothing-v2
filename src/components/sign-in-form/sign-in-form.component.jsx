@@ -1,6 +1,7 @@
 import FormInput from "../form-input/form-input.component";
 import { useContext, useState } from "react";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPES_CLASSES } from "../button/button.component";
+
 import { UserContext } from "../../contexts/users.context";
 const SignInFormComponent = ({ handleSubmit }) => {
   console.log("sign in hit");
@@ -43,7 +44,9 @@ const SignInFormComponent = ({ handleSubmit }) => {
           onChange={handleChange}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button buttonType={BUTTON_TYPES_CLASSES.google} type="submit">
+          Submit
+        </Button>
       </form>
     </div>
   );
