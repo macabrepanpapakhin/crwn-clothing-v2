@@ -20,7 +20,7 @@ const CartDropdown = () => {
           ))}
         </CartItems>
       ) : (
-        <EmptyMessage>You don't have no item in cart</EmptyMessage>
+        <EmptyMessage>No Item In The Cart</EmptyMessage>
       )}
 
       <Link to="/checkout">
