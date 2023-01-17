@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 export const CartContext = createContext({
   isCartOpen: false,
@@ -47,23 +47,80 @@ const addItemCount = (cardItems, productToAdd, amountToAdd) => {
       : cartItem
   );
 };
+export const CARTSTYPES = {
+  SET_CART_ITEMS: "SET_CARTS_ITEMS",
+  SET_ITEMS_COUNT: "SET_ITEMS_COUNT",
+  SET_TOTAL_PRICE: "SET_TOTAL_PRICE",
+  SET_CART_OPEN: "SET_CART_OPEN",
+};
+
+const cartsReducer = (state, action) => {
+  const { type, payload } = action;
+
+  // if (!type) {
+  //   console.log("sss");
+  //   console.log(type);
+  // }
+  // if (!type) throw new Error("lmao error");
+  console.log(action);
+  switch (type) {
+    case CARTSTYPES.SET_CART_ITEMS:
+      return { ...state, cartItems: payload };
+    case CARTSTYPES.SET_ITEMS_COUNT:
+      return { ...state, itemsCount: payload };
+    case CARTSTYPES.SET_CART_OPEN:
+      return { ...state, isCartOpen: payload };
+    case CARTSTYPES.SET_TOTAL_PRICE:
+      return { ...state, totalPrice: payload };
+    default:
+      throw new Error(`Unhandled type error ${type} in carts reducer`);
+  }
+};
 
 export const CartProvider = ({ children }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [itemsCount, setItemsCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-
+  const INITIAL_STATE = {
+    itemsCount: 0,
+    totalPrice: 0,
+    cartItems: [],
+    isCartOpen: false,
+  };
+  // const [isCartOpen, setIsCartOpen] = useState(false);
+  // const [cartItems, setCartItems] = useState([]);
+  // const [itemsCount, setItemsCount] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  const [state, dispatch] = useReducer(cartsReducer, INITIAL_STATE);
+  const { cartItems, totalPrice, itemsCount, isCartOpen } = state;
   const addItemToCart = (productToAdd) =>
-    setCartItems(addCartItem(cartItems, productToAdd));
+    dispatch({
+      type: CARTSTYPES.SET_CART_ITEMS,
+      payload: addCartItem(cartItems, productToAdd),
+    });
+  //setCartItems(addCartItem(cartItems, productToAdd));
 
   const removeItem = (productToRemove) =>
-    setCartItems(reduceItemCount(cartItems, productToRemove));
-  const reduceItems = (productToRemove, amountToRemove) => {
-    setCartItems(reduceItemCount(cartItems, productToRemove, amountToRemove));
-  };
-  const addItems = (productToAdd, amountToAdd) => {
-    setCartItems(addItemCount(cartItems, productToAdd, amountToAdd));
+    dispatch({
+      type: CARTSTYPES.SET_CART_ITEMS,
+      payload: reduceItemCount(cartItems, productToRemove),
+    });
+  // setCartItems(reduceItemCount(cartItems, productToRemove));
+  const reduceItems = (productToRemove, amountToRemove) =>
+    dispatch({
+      type: CARTSTYPES.SET_CART_ITEMS,
+      payload: reduceItemCount(cartItems, productToRemove, amountToRemove),
+    });
+  // setCartItems(reduceItemCount(cartItems, productToRemove, amountToRemove));
+
+  const addItems = (productToAdd, amountToAdd) =>
+    dispatch({
+      type: CARTSTYPES.SET_CART_ITEMS,
+      payload: addItemCount(cartItems, productToAdd, amountToAdd),
+    });
+  // {
+  //   setCartItems(addItemCount(cartItems, productToAdd, amountToAdd));
+  // };
+
+  const setIsCartOpen = (tt) => {
+    dispatch({ type: CARTSTYPES.SET_CART_OPEN, payload: tt });
   };
 
   useEffect(() => {
@@ -72,7 +129,8 @@ export const CartProvider = ({ children }) => {
       0
     );
 
-    setItemsCount(newCount);
+    // setItemsCount(newCount);
+    dispatch({ type: CARTSTYPES.SET_ITEMS_COUNT, payload: newCount });
   }, [cartItems]);
 
   useEffect(() => {
@@ -80,7 +138,8 @@ export const CartProvider = ({ children }) => {
       (total, cartItem) => total + cartItem.quantity * cartItem.price,
       0
     );
-    setTotalPrice(newTotalPrice);
+    //setTotalPrice(newTotalPrice);
+    dispatch({ type: CARTSTYPES.SET_TOTAL_PRICE, payload: newTotalPrice });
   }, [cartItems]);
   const value = {
     isCartOpen,
