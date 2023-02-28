@@ -7,19 +7,27 @@ import {
   NavLinkContainer,
   NavLinks,
 } from "./navigation.styles";
-import { UserContext } from "../../contexts/users.context";
+
 import { SignOutUser } from "../../utils/firebase/firebase.utils";
 import CartIcon from "../../components/card-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-drop-down/cart-drop-down.component";
 import { CartContext } from "../../contexts/cart.context";
+import { useSelector } from "react-redux";
+import { setCurrentUser } from "../../store/user/user.action";
+import { useDispatch } from "react-redux";
+import { selectCurrentUser } from "../../store/user/user.selector";
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+
   const { isCartOpen, setIsCartOpen } = useContext(CartContext);
   console.log("in navigation");
   const signOutHandler = async () => {
+    console.log("signing out");
     await SignOutUser();
-    setCurrentUser(null);
+    dispatch(setCurrentUser(null));
   };
+
   return (
     <Fragment>
       <NavigationContainer>
@@ -32,14 +40,13 @@ const Navigation = () => {
             Shop
           </NavLinks>
           {currentUser ? (
-            <span className="nav-link" onClick={signOutHandler}>
+            <NavLinks className="nav-link" onClick={signOutHandler}>
               Sign Out
-            </span>
-          ) : (
-            <NavLinks to="authentication" onClick={() => setIsCartOpen(false)}>
-              Sign In
             </NavLinks>
+          ) : (
+            <NavLinks to="authentication">Sign In</NavLinks>
           )}
+          {console.log(currentUser)}
           <CartIcon />
           <div>{isCartOpen && <CartDropdown />}</div>
         </NavLinkContainer>
